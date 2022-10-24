@@ -4,7 +4,7 @@
  */
 
 
-import type { context } from "./../context"
+import type { context } from "../context"
 import type { core } from "nexus"
 declare global {
   interface NexusGenCustomInputMethods<TypeName extends string> {
@@ -39,6 +39,7 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
+  DemoStatus: "ACCEPTED" | "PENDING" | "REJECTED" | "SUBMITTED"
 }
 
 export interface NexusGenScalars {
@@ -58,7 +59,7 @@ export interface NexusGenObjects {
     id: number; // Int!
     message?: string | null; // String
     name: string; // String!
-    status: string; // String!
+    status: NexusGenEnums['DemoStatus']; // DemoStatus!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
   Mutation: {};
@@ -73,7 +74,7 @@ export interface NexusGenUnions {
 
 export type NexusGenRootTypes = NexusGenObjects
 
-export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
+export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnums
 
 export interface NexusGenFieldTypes {
   Demo: { // field return type
@@ -83,7 +84,7 @@ export interface NexusGenFieldTypes {
     id: number; // Int!
     message: string | null; // String
     name: string; // String!
-    status: string; // String!
+    status: NexusGenEnums['DemoStatus']; // DemoStatus!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
   Mutation: { // field return type
@@ -103,7 +104,7 @@ export interface NexusGenFieldTypeNames {
     id: 'Int'
     message: 'String'
     name: 'String'
-    status: 'String'
+    status: 'DemoStatus'
     updatedAt: 'DateTime'
   }
   Mutation: { // field return type name
@@ -138,7 +139,7 @@ export type NexusGenObjectNames = keyof NexusGenObjects;
 
 export type NexusGenInputNames = keyof NexusGenInputs;
 
-export type NexusGenEnumNames = never;
+export type NexusGenEnumNames = keyof NexusGenEnums;
 
 export type NexusGenInterfaceNames = never;
 

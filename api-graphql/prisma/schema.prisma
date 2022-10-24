@@ -10,16 +10,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum DemoStatus {
+  SUBMITTED //  When demo is submitted
+  PENDING // When it has been reviewed but no decision has been made
+  ACCEPTED
+  REJECTED
+}
+
 model Demo {
-  id          Int       @id @default(autoincrement())
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  name        String    @db.VarChar(100)
-  artistAlias String    @db.VarChar(100)
-  email       String    @db.VarChar(100)
-  demoLink    String    @db.VarChar(255)
-  message     String    @db.Text()
-  status      String    @db.VarChar(100)
+  id          Int        @id @default(autoincrement())
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  name        String     @db.VarChar(100)
+  artistAlias String     @db.VarChar(100)
+  email       String     @db.VarChar(100)
+  demoLink    String     @db.VarChar(255)
+  message     String     @db.Text()
+  status      DemoStatus @default(SUBMITTED)
   comments    Comment[]
 }
 

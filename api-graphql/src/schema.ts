@@ -57,8 +57,7 @@ const Mutation = objectType({
             artistAlias: args.data.artistAlias,
             email: args.data.email,
             demoLink: args.data.demoLink,
-            message: args.data.message,
-            status: 'pending'
+            message: args.data.message
           }
         })
       }
@@ -76,8 +75,21 @@ const Demo = objectType({
     t.nonNull.string('artistAlias')
     t.nonNull.string('demoLink')
     t.string('message')
-    t.nonNull.string('status')
+    t.nonNull.field({
+      name: "status",
+      type: DemoStatusEnum
+    })
   }
+})
+
+const DemoStatusEnum = enumType({
+  name: 'DemoStatus',
+  members: [
+    'SUBMITTED', //  When demo is submitted
+    'PENDING', // When it has been reviewed but no decision has been made
+    'ACCEPTED',
+    'REJECTED'
+  ]
 })
 
 const SubmitDemoInput = inputObjectType({

@@ -14,8 +14,15 @@ type Demo {
   id: Int!
   message: String
   name: String!
-  status: String!
+  status: DemoStatus!
   updatedAt: DateTime!
+}
+
+enum DemoStatus {
+  ACCEPTED
+  PENDING
+  REJECTED
+  SUBMITTED
 }
 
 type Mutation {
