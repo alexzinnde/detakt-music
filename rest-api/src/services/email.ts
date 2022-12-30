@@ -9,7 +9,7 @@ export async function setupNoticeNewDemoEmail(demo: Demo, cb: SendGridSendEmailC
   // TODO:: don't hardcode emails
   const msg: SendGridEmailMessageProps = {
     from: 'alexzinnde@gmail.com',
-    to: 'alexzinn@detaktmusic.com',
+    to: 'zinntechniker@gmail.com',
     subject: 'New Detakt Demo',
     html: `<html>
         <head></head>

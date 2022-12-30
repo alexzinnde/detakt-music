@@ -12,7 +12,6 @@ export const handleDemoSubmit: RequestHandler = async function (req, res) {
       if (err) {
         return handleError('ERROR:: in SendGrid Send Email\n', err)
       }
-      console.log('response: ', response)
     })
     return res.sendStatus(201)
   } catch (err) {
@@ -50,12 +49,12 @@ export const handleUpdateDemo: RequestHandler = async function (req, res) {
   try {
     const demoRecord = await Demo.getDemoById(demoId)
     if (!demoRecord) {
-      throw new Error(`in handleUpdateDemo: no demo found with id ${demoId}`)
+      return res.status(400).send({status: 'not-found'})
     }
 
     const udpatedDemo = await Demo.updateDemoById(demoId, updateData)
     if (udpatedDemo) {
-      return res.send(udpatedDemo)
+      return res.status(201).send(udpatedDemo)
     }
 
     throw new Error(`Something went wrong updating demo with id: ${demoId}`)
@@ -66,11 +65,11 @@ export const handleUpdateDemo: RequestHandler = async function (req, res) {
 
 export const handleDeleteDemo: RequestHandler = async function (req, res) {
   const demoId = parseInt(req.params.id)
-  if (!demoId) return res.sendStatus(400)
+  if (!demoId) return res.status(400).send({status: 'not-found'})
   try {
     const deletedDemo = await Demo.deleteDemoById(demoId)
     if (!deletedDemo) throw Error(`Attempted to delete non-existent demo with id: ${demoId}`)
-    return res.send({ status: 'ok' })
+    return res.status(204).send({ status: 'deleted' })
   } catch (err) {
     return handleError('handleDeleteDemo', err, res)
   }

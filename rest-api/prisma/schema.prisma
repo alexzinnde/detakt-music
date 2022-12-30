@@ -19,8 +19,6 @@ enum DemoStatus {
 
 model Demo {
   id          Int        @id @default(autoincrement())
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
   name        String     @db.VarChar(100)
   artistAlias String     @db.VarChar(100)
   email       String     @db.VarChar(100)
@@ -28,16 +26,18 @@ model Demo {
   message     String     @db.Text()
   status      DemoStatus @default(SUBMITTED)
   comments    Comment[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 }
 
 model Comment {
   id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
   author    User     @relation(fields: [authorId], references: [id])
   authorId  Int      @unique
   demo      Demo     @relation(fields: [demoId], references: [id])
   demoId    Int      @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Profile {

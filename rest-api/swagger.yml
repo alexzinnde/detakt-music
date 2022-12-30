@@ -1,0 +1,226 @@
+openapi: 3.0.0
+
+info:
+  title: Detakt Music API
+  description: API for Detakt Music
+  version: 2022.0.1-alpha
+  contact:
+    name: Alex Zinn
+    email: alex@detaktmusic.com
+
+servers:
+  - url: https://stg.detaktmusic.com/v1
+    description: "Staging server"
+  - url: https://detaktmusic.com/v1
+    description: "Production server"
+
+#  ========================== DEFINITIONS ============================
+components:
+  securitySchemes:
+    authorizedUser:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    DemoStatus:
+      type: string
+      nullable: false
+      enum:
+        - submitted
+        - PENDING
+        - ACCEPTED
+        - REJECTED
+
+    Demo:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 4
+        name:
+          type: string
+          example: Richard Hawtin
+        artistAlias:
+          type: string
+          example: Richie Hawtin
+        email:
+          type: string
+          example: r@minus.de
+        demoLink:
+          type: string
+          example: "https://soundcloud.com/djchrisdezz/chris-dezz-spinnzinn-whiplash-caravan-take-10-edit"
+        message:
+          type: string
+          example: "I really hope you like this demo!"
+        status:
+          $ref: '#/components/schemas/DemoStatus'
+        comments:
+          type: array
+          items:
+            allOf:
+              - $ref: '#/components/schemas/Comment'
+        createdAt:
+          type: string
+          example: "2022-10-02T02:46:34.934Z"
+        updatedAt:
+          type: string
+          example: "2022-10-12T02:46:34.934Z"
+
+    Comment:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 2
+        author:
+          type: object
+        authorId:
+          type: number
+          example: 4
+        demo:
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/Demo'
+              
+
+            
+
+#  ========================== PATHS ============================
+paths:
+  /demo:
+    post:
+      summary: "Submit a new Demo"
+      description: "Route used by frontend to submit a new Demo"
+      operationId: handleSubmitDemo
+      tags:
+        - Demo
+      requestBody:
+        description: "A Demo object to be submitted for consideration"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Demo"
+      responses:
+        201:
+          description: "Demo successfully submitted"
+        500:
+          description: "Internal server error"
+
+  /demo/all:
+    get:
+      security:
+        - authorizedUser: []
+      summary: "Gets all demos"
+      tags:
+        - Demo
+      description: "Get all demos"
+      responses:
+        200:
+          description: Array with Demo objects
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Demo"
+        500:
+          description: "Internal server error"
+
+  /demo/{demoId}:
+    get:
+      security:
+        - authorizedUser: []
+      summary: Returns a demo by id.
+      tags:
+        - Demo
+      parameters:
+        - in: path
+          name: demoId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: Demo record id.
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Demo"
+        400:
+          description: "No demo exists with provided id"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+        500:
+          description: "Internal server error"
+    put:
+      security:
+        - authorizedUser: []
+      summary: "Update a Demo object"
+      tags:
+        - Demo
+      parameters:
+        - in: path
+          name: demoId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: Demo record id.
+      responses:
+        201:
+          description: "Demo record successfully updated in database."
+        400:
+          description: "No demo exists with provided id."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "not-found"
+        500:
+          description: "Internal server error"
+    delete:
+      security:
+        - authorizedUser: []
+      summary: "Delete a Demo object"
+      tags:
+        - Demo
+      parameters:
+        - in: path
+          name: demoId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: "ID of Demo to delete from database."
+      responses:
+        204:
+          description: "Demo record successfully deleted from database."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "deleted"
+        400:
+          description: "No demo exists with provided id."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "not-found"
+        500:
+          description: "Internal server error"
