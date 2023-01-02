@@ -1,6 +1,6 @@
 import { UserRole } from '@prisma/client'
 import { Request, Response } from 'express'
-import User from '../../db/models/User.js'
+import User from '../../db/interface/User.js'
 import { StatusMessage } from '../../types/StatusMessage.js'
 import logger from '../../utils/logger.js'
 

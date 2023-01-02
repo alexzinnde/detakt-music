@@ -111,6 +111,7 @@ model user {
   comment     comment[]
   release     release[]
   track       track[]
+  claims      Json      @db.Json
   verifiedAt  DateTime? @db.Timestamptz()
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt

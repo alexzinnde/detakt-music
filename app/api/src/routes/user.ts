@@ -1,5 +1,5 @@
 import { Router } from "express"
-import { getUserProfile, createUserProfile } from "../controllers/user/index.js"
+import { getUserProfile, createUserProfile } from "../handlers/user/index.js"
 
 
 const userRoute = Router({ strict: true })

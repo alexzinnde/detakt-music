@@ -1,13 +1,13 @@
 import { Prisma } from '@prisma/client';
 import { Request, Response } from 'express'
-import User from "../../db/models/User.js";
+import User from "../../db/interface/User.js";
 import { StatusMessage } from "../../types/StatusMessage.js";
 
 import logger from '../../utils/logger.js'
 const log = logger('User Controller')
 
 export default async function createUserProfile(req: Request, res: Response) {
-  const newUserData = req.body.newUser
+  const {newUserData} = req.body
   if (!newUserData) return res.status(400).send({ status: StatusMessage.INVALID_INPUT })
   try {
     const user = new User()
