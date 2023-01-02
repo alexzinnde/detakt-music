@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import server from './src/server.js'
 import createLogger from './src/utils/logger.js'
 

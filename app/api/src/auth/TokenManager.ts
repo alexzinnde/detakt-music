@@ -1,4 +1,4 @@
-import jwt, {JwtPayload} from 'jsonwebtoken'
+import jwt, { JwtPayload } from 'jsonwebtoken'
 
 let tokenManager: TokenManager = null
 
@@ -11,7 +11,7 @@ class TokenManager {
 
   async generateToken(payload: any): Promise<string> {
     return new Promise((resolve, reject) => {
-      jwt.sign(payload, this._secret, {expiresIn: '1h'}, (error, token) => {
+      jwt.sign(payload, this._secret, { expiresIn: '1h' }, (error, token) => {
         if (error) {
           return reject(error)
         }
@@ -33,9 +33,12 @@ class TokenManager {
 }
 
 
-export default function(secret: string) {
+export default (function (secret: string) {
+  if (!secret) {
+    throw new Error('No Token Secret')
+  }
   if (!tokenManager) {
     tokenManager = new TokenManager(secret)
   }
   return tokenManager
-}
+})(process.env.TOKEN_SECRET)
