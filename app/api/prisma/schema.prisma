@@ -1,0 +1,117 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum DemoStatus {
+  RECEIVED
+  PENDING_REVIEW
+  ACCEPTED
+  REJECTED  
+}
+
+enum UserRole {
+  ADMIN
+  ARTIST
+}
+
+model comment {
+  id        Int      @id @default(autoincrement())
+  author    Int
+  comment   String
+  user      user     @relation(fields: [author], references: [id])
+  demo      demo[]
+  track     track[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model demo {
+  id           Int      @id @default(autoincrement())
+  name         String   @db.VarChar(100)
+  artist_alias String   @db.VarChar(100)
+  comments     Int
+  message      String
+  link         String   @db.VarChar(100) @unique
+  status       String   @db.VarChar(255)
+  email        String   @db.VarChar(150)
+  votes        Json     @db.Json
+  comment      comment  @relation(fields: [comments], references: [id])
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model email {
+  id                 Int      @id @default(autoincrement())
+  sent_to            String   @db.VarChar(100)
+  message            String
+  sentAt             DateTime @db.Timestamptz(0)
+  transport_response Json     @db.Json
+  successful         Boolean
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+model release {
+  id           Int      @id @default(autoincrement())
+  tracks       Int
+  artists      Int
+  blurb        String
+  artwork      String   @db.VarChar(255)
+  release_date DateTime @db.Timestamptz(0)
+  public       Boolean
+  user         user     @relation(fields: [artists], references: [id])
+  track        track    @relation(fields: [tracks], references: [id])
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model subscriber {
+  id           Int      @id @default(autoincrement())
+  name         String?  @db.VarChar(100)
+  email        String   @db.VarChar(100) @unique
+  verified     Boolean  @default(false)
+  subscription String   @default("newsletter") @db.VarChar(100)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model track {
+  id        Int       @id @default(autoincrement())
+  title     String?   @db.VarChar(100) @unique
+  blurb     String
+  artwork   String?   @db.VarChar(255)
+  artist    Int
+  file      String?   @db.VarChar(150)
+  comments  Int
+  release   release[]
+  user      user      @relation(fields: [artist], references: [id])
+  comment   comment   @relation(fields: [comments], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model user {
+  id          Int       @id @default(autoincrement())
+  type        UserRole
+  username    String    @db.VarChar(100) @unique
+  password    String    @db.VarChar(255)
+  email       String    @db.VarChar(150) @unique
+  avatar      String    @db.VarChar(255)
+  firstname   String    @db.VarChar(100)
+  lastname    String    @db.VarChar(100)
+  artistAlias String?   @db.VarChar(100)
+  address     Json?     @db.Json
+  socialLinks Json?     @db.Json
+  bio         String?
+  comment     comment[]
+  release     release[]
+  track       track[]
+  verifiedAt  DateTime? @db.Timestamptz()
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
