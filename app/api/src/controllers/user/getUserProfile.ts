@@ -4,11 +4,10 @@ import User from '../../db/models/User.js'
 import { StatusMessage } from '../../types/StatusMessage.js'
 import logger from '../../utils/logger.js'
 
-const log = logger('User')
+const log = logger('User Controller')
 
 export default async function getUserProfile(req: Request, res: Response) {
   const { userId, userRole } = req.params
-  console.log(req.params)
 
   try {
     const user = new User()
