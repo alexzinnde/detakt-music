@@ -7,9 +7,11 @@ import { UserRole } from "@prisma/client";
 const log = logger('User')
 log.info('Initiating User interface')
 
-export default class User {
+export default class UserInterface {
 
   async createUser(newUserData: UserRecord): Promise<SanitizedUserRecord | StatusMessage> {
+    // TODO: Verify newUserData before creating new user
+    
     log.debug(`createing new user\nnewUserData ${newUserData}`)
     const newUser = await db.user.create({ data: { ...newUserData } })
     return exclude(newUser, ['password']) as SanitizedUserRecord
@@ -25,34 +27,33 @@ export default class User {
     return StatusMessage.NOT_FOUND
   }
 
-  async getUserByUsername(username: string): Promise<SanitizedUserRecord | StatusMessage> {
-    log.debug(`Getting user with username [${username}]`)
-    const user = await db.user.findFirst({ where: { username } })
-    if (user) {
-      return exclude(user, ['password']) as SanitizedUserRecord
-    }
-    log.warn(`User with username [${username}] not found`)
-    return StatusMessage.NOT_FOUND
-  }
-
   async getAllUsersByType(type: UserRole): Promise<SanitizedUserRecord[] | StatusMessage> {
     log.debug(`Getting all users of type [${type}]`)
     const users = await db.user.findMany({ where: { type } })
-    return exclude(users, ['password']) as SanitizedUserRecord[]
+    return users.length ? exclude(users, ['password']) as SanitizedUserRecord[] : []
+  }
+
+  async getUserByUsername(username: string): Promise<SanitizedUserRecord | StatusMessage> {
+    log.debug(`Getting user with username [${username}]`)
+    const user = await db.user.findFirst({ where: { username } })
+    return user !== null ? exclude(user, ['password']) as SanitizedUserRecord : null
   }
 
   async getUserByEmail(email: string): Promise<SanitizedUserRecord | StatusMessage> {
+    log.debug(`Getting user with email[${email}]`)
     const user = await db.user.findFirst({ where: { email } })
-    return user
+    return user !== null ? exclude(user, ['password']) as SanitizedUserRecord : null
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async updateUser(updatedUser: any): Promise<SanitizedUserRecord | StatusMessage> {
-    await db.user.update({ where: { id: updatedUser.id }, data: updatedUser })
+  async updateUser(updatedUserData: any): Promise<SanitizedUserRecord | StatusMessage> {
+    log.debug(`Updating user with id [${updatedUserData.id}]`)
+    await db.user.update({ where: { id: updatedUserData.id }, data: updatedUserData })
     return StatusMessage.UPDATED
   }
 
   async deleteUserById(id: number): Promise<SanitizedUserRecord | StatusMessage> {
+    log.info(`Deleting user with id [${id}]`)
     await db.user.delete({ where: { id } })
     return StatusMessage.DELETED
   }
