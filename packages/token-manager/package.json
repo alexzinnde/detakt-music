@@ -1,0 +1,33 @@
+{
+  "name": "token-manager",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc --build",
+    "start": "node dist/",
+    "predev": "npm run build",
+    "dev": "node dist/"
+  },
+  "keywords": [],
+  "author": "Alexander Zinn",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jest": "^29.2.5",
+    "@types/jsonwebtoken": "^9.0.0",
+    "@types/node": "^18.11.18",
+    "@typescript-eslint/eslint-plugin": "^5.47.1",
+    "@typescript-eslint/parser": "^5.47.1",
+    "eslint": "^8.31.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "jest": "^29.3.1",
+    "ts-jest": "^29.0.3",
+    "typescript": "^4.9.4"
+  },
+  "dependencies": {
+    "jsonwebtoken": "^9.0.0"
+  }
+}
