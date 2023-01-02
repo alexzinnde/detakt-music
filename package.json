@@ -1,0 +1,30 @@
+{
+  "name": "detakt",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexzinnde/detakt-music.git"
+  },
+  "keywords": [],
+  "workspaces": [
+    "packages/**",
+    "app/**"
+  ],
+  "author": "Alexander Zinn",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alexzinnde/detakt-music/issues"
+  },
+  "homepage": "https://github.com/alexzinnde/detakt-music#readme",
+  "devDependencies": {
+    "prisma": "^4.8.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.8.0"
+  }
+}
