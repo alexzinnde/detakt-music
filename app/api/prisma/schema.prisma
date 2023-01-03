@@ -14,6 +14,11 @@ enum DemoStatus {
   REJECTED
 }
 
+enum Vote {
+  ACCEPT
+  REJECT
+}
+
 enum UserRole {
   ADMIN
   ARTIST
@@ -34,6 +39,17 @@ model Comment {
   @@map("comment")
 }
 
+model DemoVote {
+  id      Int  @id @default(autoincrement())
+  demo    Demo @relation(fields: [demoId], references: [id])
+  demoId  Int  @map("demo_id")
+  admin   User @relation(fields: [adminId], references: [id])
+  adminId Int  @map("admin_id")
+  vote    Vote
+
+  @@map("demo_vote")
+}
+
 model Demo {
   id          Int        @id @default(autoincrement())
   name        String     @db.VarChar(100)
@@ -46,6 +62,7 @@ model Demo {
   votes       Json       @db.Json
   createdAt   DateTime   @default(now()) @map("created_at") @db.Timestamptz(0)
   updatedAt   DateTime   @default(now()) @map("updated_at") @db.Timestamptz(0)
+  DemoVotes   DemoVote[]
 
   @@map("demo")
 }
@@ -108,25 +125,26 @@ model Track {
 }
 
 model User {
-  id          Int       @id @default(autoincrement())
+  id          Int        @id @default(autoincrement())
   type        UserRole
-  username    String    @unique @db.VarChar(100)
-  password    String    @db.VarChar(255)
-  email       String    @unique @db.VarChar(150)
-  avatar      String    @db.VarChar(255)
-  firstname   String    @db.VarChar(100)
-  lastname    String    @db.VarChar(100)
-  artistAlias String?   @map("artist_alias") @db.VarChar(100)
-  address     Json?     @db.Json
-  socialLinks Json?     @map("social_links") @db.Json
+  username    String     @unique @db.VarChar(100)
+  password    String     @db.VarChar(255)
+  email       String     @unique @db.VarChar(150)
+  avatar      String     @db.VarChar(255)
+  firstname   String     @db.VarChar(100)
+  lastname    String     @db.VarChar(100)
+  artistAlias String?    @map("artist_alias") @db.VarChar(100)
+  address     Json?      @db.Json
+  socialLinks Json?      @map("social_links") @db.Json
   bio         String?
   Track       Track[]
   comment     Comment[]
   release     Release[]
-  claims      Json      @db.Json
-  verifiedAt  DateTime? @db.Timestamptz()
-  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(0)
-  updatedAt   DateTime  @default(now()) @map("updated_at") @db.Timestamptz(0)
+  claims      Json       @db.Json
+  verifiedAt  DateTime?  @db.Timestamptz()
+  createdAt   DateTime   @default(now()) @map("created_at") @db.Timestamptz(0)
+  updatedAt   DateTime   @default(now()) @map("updated_at") @db.Timestamptz(0)
+  DemoVote    DemoVote[]
 
   @@map("user")
 }
