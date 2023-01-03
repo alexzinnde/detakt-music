@@ -1,4 +1,4 @@
-import { user as User } from '@prisma/client'
+import { User } from '@prisma/client'
 import { StatusMessage } from './StatusMessage.js'
 
 

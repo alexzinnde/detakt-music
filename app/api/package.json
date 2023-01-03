@@ -8,7 +8,7 @@
     "build": "tsc --build",
     "prestart": "npm run build",
     "start": "node dist/",
-    "predev": "tsc",
+    "predev": "tsc --build",
     "dev": "node dist/",
     "debug": "node dist/"
   },

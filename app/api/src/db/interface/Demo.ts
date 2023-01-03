@@ -1,4 +1,4 @@
-import { demo as Demo } from '@prisma/client'
+import { Demo } from '@prisma/client'
 import db from '../../db/prismaClientFactory.js'
 import logger from '../../utils/logger.js'
 
@@ -12,6 +12,11 @@ export default class DemoInterface {
     return demoRecord
   }
   // read
+  async getAllDemos() {
+    log.debug(`Retrieving all demos`)
+    return db.demo.findMany()
+  }
+
   async getDemoById(id: number) {
     log.debug(`Retrieving demo by id [${id}]`)
     const demoRecord = await db.demo.findFirst({ where: { id } })
