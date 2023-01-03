@@ -13,6 +13,7 @@ export default class DemoInterface {
   }
   // read
   async getAllDemos() {
+
     log.debug(`Retrieving all demos`)
     return db.demo.findMany()
   }

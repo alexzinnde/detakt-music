@@ -11,7 +11,11 @@ export default async function (req: Request, res: Response) {
   const { demoId } = req.params
   try {
     const demo = await demoInterface.getDemoById(parseInt(demoId))
-    return res.send({ demo })
+    if (demo) {
+      return res.send({ demo })
+    }
+
+    return res.status(404).send({ status: StatusMessage.NOT_FOUND })
   } catch (error) {
     log.error(`Error retrieving demo id[${demoId}] [${error.message}]`)
     return res.status(500).send({ error: StatusMessage.ERROR })
