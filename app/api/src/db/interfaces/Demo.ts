@@ -1,5 +1,5 @@
 import { Demo } from '@prisma/client'
-import db from '../../db/prismaClientFactory.js'
+import db from '../prismaClientFactory.js'
 import logger from '../../utils/logger.js'
 
 const log = logger('Demo Interface')

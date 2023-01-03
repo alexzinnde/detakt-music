@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client';
 import { Request, Response } from 'express'
-import User from "../../db/interface/User.js";
+import User from "../../db/interfaces/User.js";
 import { StatusMessage } from "../../types/StatusMessage.js";
 
 import logger from '../../utils/logger.js'
