@@ -12,13 +12,16 @@ class Email {
   }
   async sendNewDemoEmailToAdmins(demo: Demo) {
 
-    try {
-      const admins = await this._userInterface.getAllUsersByType('ADMIN')
-      if (Array.isArray(admins)) {
-        const adminEmails = admins.map((admin: User) => admin.email)
+    const emailEnabled = process.env['EMAIL_ENABLED']
+    log.info(`enabled: ${emailEnabled}`)
+    if (emailEnabled === 'true') {
+      try {
+        const admins = await this._userInterface.getAllUsersByType('ADMIN')
+        if (Array.isArray(admins)) {
+          const adminEmails = admins.map((admin: User) => admin.email)
 
-        const subject = 'New Demo Recieved'
-        const message = `<html>New demo recieved on: ${new Date().toISOString()} <br/>
+          const subject = 'New Demo Recieved'
+          const message = `<html>New demo recieved on: ${new Date().toISOString()} <br/>
         <strong>Name:</strong> ${demo.name}  <br/>
         <strong>Artist:</strong> ${demo.artistAlias} <br/>
         <strong>Email:</strong> ${demo.email} <br/>
@@ -26,11 +29,14 @@ class Email {
         <strong>Link:</strong> ${demo.link} <br/>
         </html>
       `
-        sendGrid(adminEmails, subject, message)
+          sendGrid(adminEmails, subject, message)
+        }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
+        log.error(`Error in sendNewDEmoEmailToAdmins\n${error.message}`)
       }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      log.error(`Error in sendNewDEmoEmailToAdmins\n${error.message}`)
+    } else {
+      log.info('MOCKING EMAIL SENT SUCCESSFULLY')
     }
   }
 }

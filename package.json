@@ -22,9 +22,9 @@
   },
   "homepage": "https://github.com/alexzinnde/detakt-music#readme",
   "devDependencies": {
-    "prisma": "^4.8.0"
+    "prisma": "4.8.0"
   },
   "dependencies": {
-    "@prisma/client": "^4.8.0"
+    "@prisma/client": "4.8.0"
   }
 }

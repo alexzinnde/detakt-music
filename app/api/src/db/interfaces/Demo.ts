@@ -1,13 +1,18 @@
-import { Demo, Vote } from '@prisma/client'
+import { Demo, DemoStatus, Vote } from '@prisma/client'
 import db from '../prismaClientFactory.js'
 import logger from '../../utils/logger.js'
 import { StatusMessage } from '../../types/StatusMessage.js'
 
 const log = logger('Demo Interface')
 
+
+type DemoSubmission = Omit<Demo, 'id' | 'createdAt' | 'updatedAt' | 'status' | 'votes'>
+
+
 export default class DemoInterface {
   // create
-  async storeNewDemo(demo: Demo) {
+  async storeNewDemo(demoSubmission: DemoSubmission) {
+    const demo = { ...demoSubmission, votes: {}, status: DemoStatus.RECEIVED }
     log.debug(`Storing new demo [${JSON.stringify(demo, null, 2)}]`)
     const demoRecord = await db.demo.create({ data: demo })
     return demoRecord
@@ -32,6 +37,7 @@ export default class DemoInterface {
     return updatedDemoRecord
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async addVote(demoId: number, adminName: string, adminId: number, vote: Vote) {
 
     return 'not-implemented'
