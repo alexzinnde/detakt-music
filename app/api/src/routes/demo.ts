@@ -1,13 +1,13 @@
 import { Router } from "express"
-import { handleNewDemoSubmission, getAllDemos, getDemo, updateDemoRecord, handleDemoVote } from '../handlers/demo/index.js'
+import DemoRouteHandler from "../handlers/demo/index.js"
 
 
 const demoRoute = Router({ strict: true })
+const demoRouteHandler = new DemoRouteHandler()
 
-demoRoute.post('/', handleNewDemoSubmission)
-demoRoute.get('/', getAllDemos) // TODO: add auth middleware
-demoRoute.post('/:demoId/vote', handleDemoVote) // TODO: add auth middleware
-demoRoute.get('/:demoId', getDemo)
-demoRoute.put('/:demoId', updateDemoRecord)
+demoRoute.post('/', demoRouteHandler.handleNewDemoSubmission)
+demoRoute.get('/', demoRouteHandler.getAllDemos) // TODO: add auth middleware
+demoRoute.get('/:demoId', demoRouteHandler.getDemoById)
+demoRoute.delete('/:demoId', demoRouteHandler.deleteDemoById)
 
 export default demoRoute
