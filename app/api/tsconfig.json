@@ -1,4 +1,5 @@
 {
+  "extends": "@tsconfig/esm/tsconfig.json",
   "compilerOptions": {
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
@@ -13,7 +14,10 @@
     "composite": true,
     "declaration": true,
     "declarationMap": true,
-    "incremental": true,
+    "incremental": true
   },
-  "include": ["src/**/*", "src/utils/index.ts", "index.ts"]
+  "include": ["src/**/*", "index.ts"],
+  "ts-node": {
+    "esm": true
+  }
 }
