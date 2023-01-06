@@ -1,0 +1,23 @@
+{
+  "extends": "@tsconfig/esm/tsconfig.json",
+  "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "target": "ES2020",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "jsx": "react",
+    "noImplicitAny": true,
+    "alwaysStrict": true,
+    "importHelpers": true,
+    "pretty": true,
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "incremental": true
+  },
+  "include": ["src/**/*", "index.ts"],
+  "ts-node": {
+    "esm": true
+  }
+}

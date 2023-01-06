@@ -1,0 +1,33 @@
+{
+  "name": "@detakt/logger",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev:api": "nodemon app/api/index.ts",
+    "dev:ui": "cd app/frontend && npm run dev",
+    "dev": "concurrently \"npm run dev:api\" \"npm run dev:ui\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexzinnde/detakt-music.git"
+  },
+  "keywords": [],
+  "workspaces": [
+    "packages/**",
+    "app/**",
+    ""
+  ],
+  "author": "Alexander Zinn",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alexzinnde/detakt-music/issues"
+  },
+  "homepage": "https://github.com/alexzinnde/detakt-music#readme",
+  "devDependencies": {
+    "concurrently": "^7.6.0",
+    "nodemon": "^2.0.20",
+    "ts-node": "^10.9.1"
+  },
+  "main": "index.js",
+  "description": ""
+}

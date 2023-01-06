@@ -1,0 +1,150 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum DemoStatus {
+  RECEIVED
+  PENDING_REVIEW
+  ACCEPTED
+  REJECTED
+}
+
+enum Vote {
+  ACCEPT
+  REJECT
+}
+
+enum UserRole {
+  ADMIN
+  ARTIST
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  comment   String
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  Int      @map("author_id")
+  demo      Demo?    @relation(fields: [demoId], references: [id])
+  demoId    Int?     @map("demo_id")
+  track     Track?   @relation(fields: [trackId], references: [id])
+  trackId   Int?     @map("track_id")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(0)
+  updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz(0)
+
+  @@map("comment")
+}
+
+model DemoVote {
+  id      Int  @id @default(autoincrement())
+  demo    Demo @relation(fields: [demoId], references: [id])
+  demoId  Int  @map("demo_id")
+  admin   User @relation(fields: [adminId], references: [id])
+  adminId Int  @map("admin_id")
+  vote    Vote
+
+  @@map("demo_vote")
+}
+
+model Demo {
+  id          Int        @id @default(autoincrement())
+  name        String     @db.VarChar(100)
+  artistAlias String     @map("artist_alias") @db.VarChar(100)
+  comments    Comment[]
+  message     String     @db.Text
+  link        String     @unique @db.VarChar(100)
+  status      DemoStatus
+  email       String     @db.VarChar(150)
+  votes       Json       @db.Json
+  createdAt   DateTime   @default(now()) @map("created_at") @db.Timestamptz(0)
+  updatedAt   DateTime   @default(now()) @map("updated_at") @db.Timestamptz(0)
+  DemoVotes   DemoVote[]
+
+  @@map("demo")
+}
+
+model Email {
+  id                Int      @id @default(autoincrement())
+  recipient         String   @map("recipient") @db.VarChar(100)
+  subject           String   @db.VarChar(100)
+  message           String   @db.Text
+  sentAt            DateTime @map("sent_at") @db.Timestamptz(0)
+  transportResponse Json     @map("transport_response") @db.Json
+  successful        Boolean  @db.Boolean
+  createdAt         DateTime @default(now()) @map("created_at") @db.Timestamptz(0)
+  updatedAt         DateTime @default(now()) @map("updated_at") @db.Timestamptz(0)
+
+  @@map("email")
+}
+
+model Release {
+  id           Int      @id @default(autoincrement())
+  tracks       Track[]
+  artists      User[]
+  blurb        String   @db.VarChar(255)
+  artwork      String   @db.VarChar(255)
+  release_date DateTime @db.Timestamptz(0)
+  public       Boolean  @db.Boolean
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(0)
+  updatedAt    DateTime @default(now()) @map("updated_at") @db.Timestamptz(0)
+
+  @@map("release")
+}
+
+model Subscriber {
+  id           Int      @id @default(autoincrement())
+  name         String?  @db.VarChar(100)
+  email        String   @unique @db.VarChar(100)
+  verified     Boolean  @default(false)
+  subscription String   @default("newsletter") @db.VarChar(100)
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(0)
+  updatedAt    DateTime @default(now()) @map("updated_at") @db.Timestamptz(0)
+
+  @@map("subscriber")
+}
+
+model Track {
+  id        Int       @id @default(autoincrement())
+  title     String?   @db.VarChar(100)
+  blurb     String?   @db.VarChar(255)
+  artwork   String?   @db.VarChar(255)
+  artist    User      @relation(fields: [artistId], references: [id])
+  artistId  Int       @map("artist_id")
+  file      String?   @db.VarChar(150)
+  release   Release   @relation(fields: [releaseId], references: [id])
+  releaseId Int       @map("release_id")
+  comment   Comment[]
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(0)
+  updatedAt DateTime  @default(now()) @map("updated_at") @db.Timestamptz(0)
+
+  @@map("track")
+}
+
+model User {
+  id          Int        @id @default(autoincrement())
+  type        UserRole
+  username    String     @unique @db.VarChar(100)
+  password    String     @db.VarChar(255)
+  email       String     @unique @db.VarChar(150)
+  avatar      String     @db.VarChar(255)
+  firstname   String     @db.VarChar(100)
+  lastname    String     @db.VarChar(100)
+  artistAlias String?    @map("artist_alias") @db.VarChar(100)
+  address     Json?      @db.Json
+  socialLinks Json?      @map("social_links") @db.Json
+  bio         String?
+  Track       Track[]
+  comment     Comment[]
+  release     Release[]
+  claims      Json       @db.Json
+  verifiedAt  DateTime?  @db.Timestamptz()
+  createdAt   DateTime   @default(now()) @map("created_at") @db.Timestamptz(0)
+  updatedAt   DateTime   @default(now()) @map("updated_at") @db.Timestamptz(0)
+  DemoVote    DemoVote[]
+
+  @@map("user")
+}
