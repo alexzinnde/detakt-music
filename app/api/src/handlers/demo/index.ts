@@ -83,8 +83,3 @@ export default class DemoRouteHandler {
     }
   }
 }
-
-// export {
-//   updateDemoRecord,
-//   handleDemoVote
-// }

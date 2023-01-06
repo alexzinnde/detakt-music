@@ -1,12 +1,18 @@
+import React from 'react'
+
 import {Container} from 'react-bootstrap'
-import './App.css'
+
 import DemoSubmissionForm from './components/forms/DemoSubmissionForm'
+import NavigationBar from './components/navigation/NavigationBar.js'
 
 function App() {
   return (
-    <Container>
-      <DemoSubmissionForm />
-    </Container>
+    <>
+      <NavigationBar />
+      <Container>
+        <DemoSubmissionForm />
+      </Container>
+    </>
   )
 }
 
