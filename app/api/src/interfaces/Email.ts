@@ -1,6 +1,6 @@
 import { Demo, User } from "@prisma/client";
 import sendGrid from "../utils/SendGrid.js";
-import UserInterface from "../db/interfaces/User.js";
+import UserInterface from "../db/models/User.js";
 import logger from "../utils/logger.js";
 
 const log = logger('Email Interface')

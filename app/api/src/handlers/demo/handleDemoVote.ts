@@ -1,6 +1,6 @@
 import { Vote } from "@prisma/client";
 import { Request, Response } from "express";
-import DemoInterface from "../../db/interfaces/Demo.js";
+import DemoInterface from "../../db/models/Demo.js";
 import { StatusMessage } from "../../types/StatusMessage.js";
 import logger from "../../utils/logger.js";
 

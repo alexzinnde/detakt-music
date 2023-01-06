@@ -1,4 +1,4 @@
-import DemoInterface from "../../db/interfaces/Demo.js";
+import DemoInterface from "../../db/models/Demo.js";
 import Email from "../../interfaces/Email.js";
 import logger from "../../utils/logger.js";
 import { Logger } from "winston";
