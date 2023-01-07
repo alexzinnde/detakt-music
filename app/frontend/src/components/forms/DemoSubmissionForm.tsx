@@ -44,7 +44,7 @@ export type DemoSubmissionFormData = {
   message: string
 }
 
-const demoLink = 'https://soundcloud.com/sds' + Math.random() * 100000
+const demoLink = 'https://soundcloud.com/spinnzinn/sets/spinnzinn-live-sets?si=65396965a2d341aba508eeb543c415d8'
 const message =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
 
